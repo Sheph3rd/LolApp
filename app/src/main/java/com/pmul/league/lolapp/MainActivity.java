@@ -1,5 +1,6 @@
 package com.pmul.league.lolapp;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity
 
         bd_lolUniversity = new BD_LOLUniversity(getApplicationContext());
 
+        SQLiteDatabase database = bd_lolUniversity.getReadableDatabase();
 
 
         new getLore().execute();

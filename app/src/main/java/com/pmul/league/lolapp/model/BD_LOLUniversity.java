@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
                     + COLUMN_LORE + " TEXT,"
                     + COLUMN_NAME + " TEXT,"
                     + COLUMN_TIPS + " TEXT,"
-                    + COLUMN_IMG + " TEXT"
+                    + COLUMN_IMG + " BLOB"
                     + ");";
 
     static final String CREATE_SKILLS_TABLE =
@@ -74,29 +75,33 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
                     + COLUMN_SKIN_IMG + " BLOB"
                     + ");";
 
-
-/*
-    static final String DROP_NOTES_TABLE =
-            "DROP TABLE IF EXISTS " + TABLE_NOTES;
-*/
+    static final String DROP_TABLE_CHAMPIONS = "DROP TABLE IF EXISTS " + TABLE_CHAMPIONS;
+    static final String DROP_TABLE_SKINS = "DROP TABLE IF EXISTS " + TABLE_SKINS;
+    static final String DROP_TABLE_SKILLS = "DROP TABLE IF EXISTS " + TABLE_SKILLS;
 
     public BD_LOLUniversity(Context context)
     {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
     }
 
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        db.execSQL(SQL_CREAR_DB);
-        //db.execSQL(CREATE_SKILLS_TABLE);
-        //db.execSQL(CREATE_SKINS_TABLE);
+        db.execSQL(CREATE_CHAMPION_TABLE);
+        db.execSQL(CREATE_SKILLS_TABLE);
+        db.execSQL(CREATE_SKINS_TABLE);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+    {
+        db.execSQL(DROP_TABLE_CHAMPIONS);
+        db.execSQL(DROP_TABLE_SKILLS);
+        db.execSQL(DROP_TABLE_SKINS);
 
+        db.execSQL(CREATE_CHAMPION_TABLE);
+        db.execSQL(CREATE_SKILLS_TABLE);
+        db.execSQL(CREATE_SKINS_TABLE);
     }
 
     /*
