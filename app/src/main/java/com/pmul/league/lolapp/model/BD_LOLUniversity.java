@@ -51,6 +51,7 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
                     + ");";
 
 //boaaa vin disel
+    //boaaa mac nou
 
     static final String CREATE_SKILLS_TABLE =
             "CREATE TABLE " + TABLE_SKILLS + " ("
