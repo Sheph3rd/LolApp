@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.pmul.league.lolapp.model.BD_LOLUniversity;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -13,7 +15,7 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity
 {
     TextView tvLore;
-
+    BD_LOLUniversity bd_lolUniversity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -25,9 +27,11 @@ public class MainActivity extends AppCompatActivity
 
         // Comentario de prueba
 
+        bd_lolUniversity = new BD_LOLUniversity(getApplicationContext());
+
+
+
         new getLore().execute();
-
-
     }
 
     private class getLore extends AsyncTask<Void, Void, String>
@@ -37,12 +41,15 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected String doInBackground(Void... params) {
             String title ="";
+
             Document doc;
+
             try
             {
                 doc = Jsoup.connect("http://gameinfo.euw.leagueoflegends.com/es/game-info/champions/ahri/").get();
 
-                content = doc.getElementById("champion-lore").text();
+                // content = doc.getElementById("champion-lore").text();
+                content = doc.getElementById("spell-AhriOrbofDeception").text();
 
             } catch (IOException e) {
                 e.printStackTrace();
