@@ -41,12 +41,6 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
     static final String COLUMN_SKIN_VIDEO = "skin_video";
     static final String COLUMN_SKIN_IMG = "skin_img";
 
-    public static final String SQL_CREAR_DB = "create table "
-            + TABLE_CHAMPIONS + "(" +
-            COLUMN_ID + " integer primary key autoincrement, " +
-            COLUMN_LORE + " text null, " +
-            COLUMN_NAME + " text null" + ");";
-
     static final String CREATE_CHAMPION_TABLE =
             "CREATE TABLE " + TABLE_CHAMPIONS + " ("
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -55,6 +49,9 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
                     + COLUMN_TIPS + " TEXT,"
                     + COLUMN_IMG + " BLOB"
                     + ");";
+
+//boaaa vin disel
+    //boaaa mac nou
 
     static final String CREATE_SKILLS_TABLE =
             "CREATE TABLE " + TABLE_SKILLS + " ("
