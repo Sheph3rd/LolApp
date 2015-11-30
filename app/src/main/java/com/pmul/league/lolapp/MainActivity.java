@@ -10,11 +10,14 @@ import com.pmul.league.lolapp.model.BD_LOLUniversity;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity
 {
+    Elements championList;
     TextView tvLore;
     BD_LOLUniversity bd_lolUniversity;
 
@@ -26,17 +29,15 @@ public class MainActivity extends AppCompatActivity
 
         tvLore = (TextView) findViewById(R.id.textViewLore);
 
-        // Comentario de prueba
-
         bd_lolUniversity = new BD_LOLUniversity(getApplicationContext());
 
         SQLiteDatabase database = bd_lolUniversity.getReadableDatabase();
 
+        new getChampionData().execute();
 
-        new getLore().execute();
     }
 
-    private class getLore extends AsyncTask<Void, Void, String>
+    private class getChampionData extends AsyncTask<Void, Void, String>
     {
         String content;
 
@@ -44,28 +45,64 @@ public class MainActivity extends AppCompatActivity
         protected String doInBackground(Void... params) {
             String title ="";
 
-            Document doc;
+            //Document doc;
 
-            try
+            Elements championList = getChampionList();
+
+            //doc = Jsoup.connect("http://gameinfo.euw.leagueoflegends.com/es/game-info/champions/ahri/").get();
+            //doc = Jsoup.connect("http://leagueoflegends.wikia.com/wiki/List_of_champions").get();
+
+            // content = doc.getElementById("champion-lore").text();
+
+            //Elements elements = doc.select("div[id^=spell]");
+
+           // Elements campeones = doc.getElementsByClass("character_icon tooltips-init-complete");
+
+            content = String.valueOf(championList.size());
+            for (Element e:championList)
             {
-                doc = Jsoup.connect("http://gameinfo.euw.leagueoflegends.com/es/game-info/champions/ahri/").get();
-
-                // content = doc.getElementById("champion-lore").text();
-                content = doc.getElementById("spell-AhriOrbofDeception").text();
-
-            } catch (IOException e) {
-                e.printStackTrace();
+                if (e.text() != "")
+                {
+                    content += "\n" + e.text();
+                }
             }
             return title;
         }
 
-
         @Override
-        protected void onPostExecute(String result) {
-            //if you had a ui element, you could display the title
+        protected void onPostExecute(String result)
+        {
             ((TextView)findViewById (R.id.textViewLore)).setText (content);
         }
     }
+
+
+    private Elements getChampionList()
+    {
+        Elements chamopionList = new Elements();
+        Document doc;
+
+        try
+        {
+            doc = Jsoup.connect("http://leagueoflegends.wikia.com/wiki/List_of_champions").get();
+            Elements campeones = doc.select("span[class^=character]");
+            campeones = campeones.select("a[href]");
+
+            for (Element e:campeones)
+            {
+                if (e.text() != "")
+                {
+                    chamopionList.add(e);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return chamopionList;
+
+    }
+
+
 
 
 }
