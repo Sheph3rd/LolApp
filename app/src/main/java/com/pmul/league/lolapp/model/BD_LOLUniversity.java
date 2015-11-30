@@ -50,9 +50,6 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
                     + COLUMN_IMG + " BLOB"
                     + ");";
 
-//boaaa vin disel
-    //boaaa mac nou
-
     static final String CREATE_SKILLS_TABLE =
             "CREATE TABLE " + TABLE_SKILLS + " ("
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -100,8 +97,6 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
         db.execSQL(CREATE_SKILLS_TABLE);
         db.execSQL(CREATE_SKINS_TABLE);
     }
-
-    // PROBA DE MACHACACION
 
     /*
     @Override
