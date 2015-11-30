@@ -104,6 +104,8 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
         db.execSQL(CREATE_SKINS_TABLE);
     }
 
+    // PROBA DE MACHACACION
+
     /*
     @Override
     public ArrayList<Note> getNotes() {
