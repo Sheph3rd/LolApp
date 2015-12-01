@@ -71,19 +71,19 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
                     + COLUMN_REGION + " TEXT,"
                     + COLUMN_TIPS + " TEXT,"
                     + COLUMN_IMG + " BLOB,"
-                    + COLUMN_HP + " REAL,"
-                    + COLUMN_MP + " REAL,"
-                    + COLUMN_AD + " REAL,"
-                    + COLUMN_AP + " REAL,"
-                    + COLUMN_ASPD + " REAL,"
-                    + COLUMN_MOVSPEED + " REAL,"
-                    + COLUMN_HPREGEN + " REAL,"
-                    + COLUMN_MPREGEN + " REAL,"
-                    + COLUMN_ARMOR + " REAL,"
-                    + COLUMN_MR + " REAL,"
-                    + COLUMN_CRITSTRIKE + " REAL,"
-                    + COLUMN_LS + " REAL,"
-                    + COLUMN_CDR + " REAL"
+                    + COLUMN_HP + " TEXT,"
+                    + COLUMN_MP + " TEXT,"
+                    + COLUMN_AD + " TEXT,"
+                    + COLUMN_AP + " TEXT,"
+                    + COLUMN_ASPD + " TEXT,"
+                    + COLUMN_MOVSPEED + " TEXT,"
+                    + COLUMN_HPREGEN + " TEXT,"
+                    + COLUMN_MPREGEN + " TEXT,"
+                    + COLUMN_ARMOR + " TEXT,"
+                    + COLUMN_MR + " TEXT,"
+                    + COLUMN_CRITSTRIKE + " TEXT,"
+                    + COLUMN_LS + " TEXT,"
+                    + COLUMN_CDR + " TEXT"
                     + ");";
 
     static final String CREATE_SKILLS_TABLE =
@@ -202,19 +202,19 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
                 champ.setTips(cursor.getString(cursor.getColumnIndex(COLUMN_TIPS)));
                 champ.setImg(cursor.getBlob(cursor.getColumnIndex(COLUMN_IMG)));
                 // STATS
-                champ.setHp(cursor.getDouble(cursor.getColumnIndex(COLUMN_HP)));
-                champ.setMp(cursor.getDouble(cursor.getColumnIndex(COLUMN_MP)));
-                champ.setAd(cursor.getDouble(cursor.getColumnIndex(COLUMN_AD)));
-                champ.setAp(cursor.getDouble(cursor.getColumnIndex(COLUMN_AP)));
-                champ.setAspd(cursor.getDouble(cursor.getColumnIndex(COLUMN_ASPD)));
-                champ.setMovspeed(cursor.getDouble(cursor.getColumnIndex(COLUMN_MOVSPEED)));
-                champ.setHpregen(cursor.getDouble(cursor.getColumnIndex(COLUMN_HPREGEN)));
-                champ.setMpregen(cursor.getDouble(cursor.getColumnIndex(COLUMN_MPREGEN)));
-                champ.setArmor(cursor.getDouble(cursor.getColumnIndex(COLUMN_ARMOR)));
-                champ.setMr(cursor.getDouble(cursor.getColumnIndex(COLUMN_MR)));
-                champ.setCritstrike(cursor.getDouble(cursor.getColumnIndex(COLUMN_CRITSTRIKE)));
-                champ.setLs(cursor.getDouble(cursor.getColumnIndex(COLUMN_LS)));
-                champ.setCdr(cursor.getDouble(cursor.getColumnIndex(COLUMN_CDR)));
+                champ.setHp(cursor.getString(cursor.getColumnIndex(COLUMN_HP)));
+                champ.setMp(cursor.getString(cursor.getColumnIndex(COLUMN_MP)));
+                champ.setAd(cursor.getString(cursor.getColumnIndex(COLUMN_AD)));
+                champ.setAp(cursor.getString(cursor.getColumnIndex(COLUMN_AP)));
+                champ.setAspd(cursor.getString(cursor.getColumnIndex(COLUMN_ASPD)));
+                champ.setMovspeed(cursor.getString(cursor.getColumnIndex(COLUMN_MOVSPEED)));
+                champ.setHpregen(cursor.getString(cursor.getColumnIndex(COLUMN_HPREGEN)));
+                champ.setMpregen(cursor.getString(cursor.getColumnIndex(COLUMN_MPREGEN)));
+                champ.setArmor(cursor.getString(cursor.getColumnIndex(COLUMN_ARMOR)));
+                champ.setMr(cursor.getString(cursor.getColumnIndex(COLUMN_MR)));
+                champ.setCritstrike(cursor.getString(cursor.getColumnIndex(COLUMN_CRITSTRIKE)));
+                champ.setLs(cursor.getString(cursor.getColumnIndex(COLUMN_LS)));
+                champ.setCdr(cursor.getString(cursor.getColumnIndex(COLUMN_CDR)));
 
                 // Añadir campeon al Array de campeones
                 champions.add(champ);
