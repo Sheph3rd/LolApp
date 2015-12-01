@@ -1,16 +1,17 @@
 package com.pmul.league.lolapp.model;
 
-import android.graphics.Bitmap;
 
 /**
  * Created by Rodi on 30/11/2015.
  */
-public class Skin extends Champion
+public class Skin
 {
     private int skin_id;
+    private String champ_name;
     private String skin_name;
     private String skin_video;
-    private Bitmap skin_img;
+    private byte[] skin_img;
+
 
     public Skin() { }
 
@@ -22,6 +23,14 @@ public class Skin extends Champion
 
     public int getSkin_id() {
         return skin_id;
+    }
+
+    public String getChamp_name() {
+        return champ_name;
+    }
+
+    public void setChamp_name(String champ_name) {
+        this.champ_name = champ_name;
     }
 
     public void setSkin_id(int skin_id) {
@@ -44,11 +53,11 @@ public class Skin extends Champion
         this.skin_video = skin_video;
     }
 
-    public Bitmap getSkin_img() {
+    public byte[] getSkin_img() {
         return skin_img;
     }
 
-    public void setSkin_img(Bitmap skin_img) {
+    public void setSkin_img(byte[] skin_img) {
         this.skin_img = skin_img;
     }
 }

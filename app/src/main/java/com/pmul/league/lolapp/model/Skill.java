@@ -1,20 +1,21 @@
 package com.pmul.league.lolapp.model;
 
-import android.graphics.Bitmap;
 
 /**
  * Created by Rodi on 30/11/2015.
  */
-public class Skill extends Champion
+public class Skill
 {
     private int skill_id;
+    private String champ_name;
     private String description;
     private String detail;
     private String skill_name;
     private String skill_video;
     private String cast_char;
-    private Bitmap skill_img;
-
+    private byte[] skill_img;
+    private String skill_cost;
+    private String skill_range;
 
 
     public Skill() { }
@@ -23,6 +24,38 @@ public class Skill extends Champion
     // GETTERS AND SETTERS
 
     public int getId() { return skill_id; }
+
+    public String getSkill_cost() {
+        return skill_cost;
+    }
+
+    public void setSkill_cost(String skill_cost) {
+        this.skill_cost = skill_cost;
+    }
+
+    public String getSkill_range() {
+        return skill_range;
+    }
+
+    public void setSkill_range(String skill_range) {
+        this.skill_range = skill_range;
+    }
+
+    public int getSkill_id() {
+        return skill_id;
+    }
+
+    public void setSkill_id(int skill_id) {
+        this.skill_id = skill_id;
+    }
+
+    public String getChamp_name() {
+        return champ_name;
+    }
+
+    public void setChamp_name(String champ_name) {
+        this.champ_name = champ_name;
+    }
 
     public void setId(int skill_id) {
         this.skill_id = skill_id;
@@ -68,11 +101,11 @@ public class Skill extends Champion
         this.cast_char = cast_char;
     }
 
-    public Bitmap getSkill_img() {
+    public byte[] getSkill_img() {
         return skill_img;
     }
 
-    public void setSkill_img(Bitmap skill_img) {
+    public void setSkill_img(byte[] skill_img) {
         this.skill_img = skill_img;
     }
 }

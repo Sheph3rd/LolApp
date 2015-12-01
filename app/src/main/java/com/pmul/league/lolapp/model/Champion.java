@@ -1,6 +1,5 @@
 package com.pmul.league.lolapp.model;
 
-import android.graphics.Bitmap;
 
 /**
  * Created by Rodi on 30/11/2015.
@@ -8,25 +7,27 @@ import android.graphics.Bitmap;
 public class Champion
 {
     // DESCRIPTION
-    protected int id;
-    protected String lore; // champion history
-    protected String name;
-    protected String tips;
-    protected Bitmap img;
+    private int id;
+    private String lore; // champion history
+    private String name;
+    private String tips;
+    private String title;
+    private String region;
+    private byte[] img;
 
     // STATS
-    protected double hp; // health
-    protected double mp; // mana
-    protected double ad; // attack damage
-    protected double ap; // ability power
-    protected double aspd; // attack speed
-    protected double movspeed; // movement speed
-    protected double hpregen; // health regeneration
-    protected double mpregen; // mana regenration
-    protected double armor; // armor
-    protected double mr; // magic resist
-    protected double critstrike; // critical strike
-    protected double ls; // life steal
+    private double hp; // health
+    private double mp; // mana
+    private double ad; // attack damage
+    private double ap; // ability power
+    private double aspd; // attack speed
+    private double movspeed; // movement speed
+    private double hpregen; // health regeneration
+    private double mpregen; // mana regenration
+    private double armor; // armor
+    private double mr; // magic resist
+    private double critstrike; // critical strike
+    private double ls; // life steal
 
     public Champion (){}
 
@@ -42,6 +43,22 @@ public class Champion
 
     public void setLore(String lore) {this.lore = lore;}
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
     public String getName() {return name;}
 
     public void setName(String name) {this.name = name;}
@@ -50,11 +67,11 @@ public class Champion
 
     public void setTips(String tips) {this.tips = tips;}
 
-    public Bitmap getImg() {
+    public byte[] getImg() {
         return img;
     }
 
-    public void setImg(Bitmap img) {
+    public void setImg(byte[] img) {
         this.img = img;
     }
 
