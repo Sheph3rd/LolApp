@@ -19,12 +19,28 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
     static final int DATABASE_VERSION = 1;
 
     // TABLA CAMPEONES
-    static final String TABLE_CHAMPIONS = "champions";
-    static final String COLUMN_ID = "id";
-    static final String COLUMN_LORE = "lore";
-    static final String COLUMN_NAME = "name";
-    static final String COLUMN_TIPS = "tips";
-    static final String COLUMN_IMG = "img";
+        // DESCRIPTION
+        static final String TABLE_CHAMPIONS = "champions";
+        static final String COLUMN_ID = "id";
+        static final String COLUMN_LORE = "lore";
+        static final String COLUMN_NAME = "name";
+        static final String COLUMN_TIPS = "tips";
+        static final String COLUMN_IMG = "img";
+
+        // STATS
+        static final String COLUMN_HP = "hp"; // health
+        static final String COLUMN_MP ="mp"; // mana
+        static final String COLUMN_AD = "ad"; // attack damage
+        static final String COLUMN_AP = "ap"; // ability power
+        static final String COLUMN_ASPD = "aspd"; // attack speed
+        static final String COLUMN_MOVSPEED = "movspeed"; // movement speed
+        static final String COLUMN_HPREGEN = "hpregen"; // health regeneration
+        static final String COLUMN_MPREGEN = "mpregen"; // mana regenration
+        static final String COLUMN_ARMOR = "armor"; // armor
+        static final String COLUMN_MR = "mr"; // magic resist
+        static final String COLUMN_CRITSTRIKE = "critstrike"; // critical strike
+        static final String COLUMN_LS = "ls"; // life steal
+
 
     // TABLA HABILIDADES
     static final String TABLE_SKILLS = "skills";
@@ -47,7 +63,19 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
                     + COLUMN_LORE + " TEXT,"
                     + COLUMN_NAME + " TEXT,"
                     + COLUMN_TIPS + " TEXT,"
-                    + COLUMN_IMG + " BLOB"
+                    + COLUMN_IMG + " BLOB,"
+                    + COLUMN_HP + " REAL,"
+                    + COLUMN_MP + " REAL,"
+                    + COLUMN_AD + " REAL,"
+                    + COLUMN_AP + " REAL,"
+                    + COLUMN_ASPD + " REAL,"
+                    + COLUMN_MOVSPEED + " REAL,"
+                    + COLUMN_HPREGEN + " REAL,"
+                    + COLUMN_MPREGEN + " REAL,"
+                    + COLUMN_ARMOR + " REAL,"
+                    + COLUMN_MR + " REAL,"
+                    + COLUMN_CRITSTRIKE + " REAL,"
+                    + COLUMN_LS + " REAL"
                     + ");";
 
     static final String CREATE_SKILLS_TABLE =
