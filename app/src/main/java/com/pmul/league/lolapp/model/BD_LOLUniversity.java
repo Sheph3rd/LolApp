@@ -82,7 +82,7 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
                     + COLUMN_ARMOR + " REAL,"
                     + COLUMN_MR + " REAL,"
                     + COLUMN_CRITSTRIKE + " REAL,"
-                    + COLUMN_LS + " REAL"
+                    + COLUMN_LS + " REAL,"
                     + COLUMN_CDR + " REAL"
                     + ");";
 
