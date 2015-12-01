@@ -41,7 +41,7 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
         static final String COLUMN_MR = "mr"; // magic resist
         static final String COLUMN_CRITSTRIKE = "critstrike"; // critical strike
         static final String COLUMN_LS = "ls"; // life steal
-        static final String COLUMN_CDR = "ls";//cooldown reduction
+        static final String COLUMN_CDR = "cdr";//cooldown reduction
 
 
     // TABLA HABILIDADES

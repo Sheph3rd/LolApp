@@ -4,22 +4,25 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.pmul.league.lolapp.model.BD_LOLUniversity;
+import com.pmul.league.lolapp.model.Champion;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.Console;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity
 {
     Elements championList;
     TextView tvLore;
-    BD_LOLUniversity bd_lolUniversity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,15 +32,11 @@ public class MainActivity extends AppCompatActivity
 
         tvLore = (TextView) findViewById(R.id.textViewLore);
 
-        bd_lolUniversity = new BD_LOLUniversity(getApplicationContext());
-
-        SQLiteDatabase database = bd_lolUniversity.getReadableDatabase();
-
-        new getChampionData().execute();
+        new getAllChampionsData().execute();
 
     }
 
-    private class getChampionData extends AsyncTask<Void, Void, String>
+    private class getAllChampionsData extends AsyncTask<Void, Void, String>
     {
         String content;
 
@@ -45,58 +44,15 @@ public class MainActivity extends AppCompatActivity
         protected String doInBackground(Void... params) {
             String title ="";
 
-            Document doc;
-
             Elements championList = getChampionList();
-
-            //doc = Jsoup.connect("http://gameinfo.euw.leagueoflegends.com/es/game-info/champions/ahri/").get();
-            //doc = Jsoup.connect("http://leagueoflegends.wikia.com/wiki/List_of_champions").get();
-
-            // content = doc.getElementById("champion-lore").text();
-
-            //Elements elements = doc.select("div[id^=spell]");
-
-           // Elements campeones = doc.getElementsByClass("character_icon tooltips-init-complete");
 
             content = String.valueOf(championList.size());
 
-            try
-            {
-                doc = Jsoup.connect("http://gameinfo.euw.leagueoflegends.com/en/game-info/champions/ahri/").get();
-                Elements elem = doc.select("div[class^=faction]");
-
-                content += "\nRegion: " + elem.first().text();
-
-                elem = doc.select("em");
-                content += "\nTitle: " + elem.first().text();
-
-                elem = doc.select("span[class*=stat]");
-
-                content += "\n\n\nFiligrana: \n";
-                for (Element e:elem)
-                {
-                    content +=  "\n" + e.text();
-                }
-
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            /*
             for (Element e:championList)
             {
-                if (e.text() != "")
-                {
-                    content += "\n" + e.text();
-                }
+               getChampionData(e.text());
             }
-
-            */
             return title;
-
-
         }
 
         @Override
@@ -132,7 +88,73 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void getChampionData(String championName)
+    {
+        Document doc;
+        BD_LOLUniversity bd_lolUniversity = new BD_LOLUniversity(getApplicationContext());
+        String champName = championName.replaceAll("\\W", "");
+        champName = champName.toLowerCase();
+        String url = "http://gameinfo.euw.leagueoflegends.com/es/game-info/champions/" + champName + "/";
 
+        try
+        {
+            Champion champion = new Champion();
+            Elements elements;
+            Element element;
+            doc = Jsoup.connect(url).get();
+
+
+            element = doc.getElementById("champion-lore");
+            champion.setLore(element.text());
+
+            champion.setName(championName);
+
+            elements = doc.select("em");
+            champion.setTitle(elements.first().text());
+
+            elements = doc.select("div[class^=faction]");
+            champion.setRegion(elements.first().text());
+
+            champion.setImg(null);
+
+            elements = doc.select("span[class*=stat]");
+
+            if (elements.size() > 16)
+            {
+                champion.setHp(elements.get(1).text());
+                champion.setMp(elements.get(3).text());
+                champion.setAd(elements.get(5).text());
+                champion.setAspd(elements.get(7).text());
+                champion.setMovspeed(elements.get(9).text());
+                champion.setHpregen(elements.get(11).text());
+                champion.setMpregen(elements.get(13).text());
+                champion.setArmor(elements.get(15).text());
+                champion.setMr(elements.get(17).text());
+            }
+            else
+            {
+                champion.setHp(elements.get(1).text());
+                champion.setAd(elements.get(3).text());
+                champion.setAspd(elements.get(5).text());
+                champion.setMovspeed(elements.get(7).text());
+                champion.setHpregen(elements.get(9).text());
+                champion.setArmor(elements.get(11).text());
+                champion.setMr(elements.get(13).text());
+            }
+
+
+
+            bd_lolUniversity.addChampion(champion);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+    }
 
 
 }
