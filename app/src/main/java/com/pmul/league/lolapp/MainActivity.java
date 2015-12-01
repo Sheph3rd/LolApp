@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity
         protected String doInBackground(Void... params) {
             String title ="";
 
-            //Document doc;
+            Document doc;
 
             Elements championList = getChampionList();
 
@@ -59,6 +59,44 @@ public class MainActivity extends AppCompatActivity
            // Elements campeones = doc.getElementsByClass("character_icon tooltips-init-complete");
 
             content = String.valueOf(championList.size());
+
+            try
+            {
+                doc = Jsoup.connect("http://gameinfo.euw.leagueoflegends.com/en/game-info/champions/ahri/").get();
+                Elements elem = doc.select("div[class^=faction]");
+
+                content += "\nRegion: " + elem.first().text();
+
+                elem = doc.select("em");
+                content += "\nTitle: " + elem.first().text();
+
+                elem = doc.select("span[class*=stat-hp]");
+
+                content += "\nTexto Vida: " + elem.first().text();
+
+                elem = elem.parents().first().children();
+
+
+
+                content += "\nValor: " + elem.last().text();
+
+
+                elem = doc.select("span[class*=stat]");
+
+
+                content += "\n\n\nFiligrana: \n";
+                for (Element e:elem)
+                {
+                    content +=  "\n" + e.text();
+                }
+
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            /*
             for (Element e:championList)
             {
                 if (e.text() != "")
@@ -66,7 +104,11 @@ public class MainActivity extends AppCompatActivity
                     content += "\n" + e.text();
                 }
             }
+
+            */
             return title;
+
+
         }
 
         @Override
