@@ -70,19 +70,7 @@ public class MainActivity extends AppCompatActivity
                 elem = doc.select("em");
                 content += "\nTitle: " + elem.first().text();
 
-                elem = doc.select("span[class*=stat-hp]");
-
-                content += "\nTexto Vida: " + elem.first().text();
-
-                elem = elem.parents().first().children();
-
-
-
-                content += "\nValor: " + elem.last().text();
-
-
                 elem = doc.select("span[class*=stat]");
-
 
                 content += "\n\n\nFiligrana: \n";
                 for (Element e:elem)

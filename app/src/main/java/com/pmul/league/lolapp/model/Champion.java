@@ -16,19 +16,19 @@ public class Champion
     private byte[] img;
 
     // STATS
-    private double hp; // health
-    private double mp; // mana
-    private double ad; // attack damage
-    private double ap; // ability power
-    private double aspd; // attack speed
-    private double movspeed; // movement speed
-    private double hpregen; // health regeneration
-    private double mpregen; // mana regenration
-    private double armor; // armor
-    private double mr; // magic resist
-    private double critstrike; // critical strike
-    private double ls; // life steal
-    private double cdr;//cooldown reduction
+    private String hp; // health
+    private String mp; // mana
+    private String ad; // attack damage
+    private String ap; // ability power
+    private String aspd; // attack speed
+    private String movspeed; // movement speed
+    private String hpregen; // health regeneration
+    private String mpregen; // mana regenration
+    private String armor; // armor
+    private String mr; // magic resist
+    private String critstrike; // critical strike
+    private String ls; // life steal
+    private String cdr;//cooldown reduction
 
 
 
@@ -40,20 +40,37 @@ public class Champion
 
 
     // GETTERS AND SETTERS
-    public int getId() {return id;}
 
-    public void setId(int id) {this.id = id;}
-
-    public String getLore() {return lore;}
-
-    public void setLore(String lore) {this.lore = lore;}
-
-    public void setCdr(double cdr) {
-        this.cdr = cdr;
+    public int getId() {
+        return id;
     }
 
-    public double getCdr() {
-        return cdr;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getLore() {
+        return lore;
+    }
+
+    public void setLore(String lore) {
+        this.lore = lore;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getTips() {
+        return tips;
+    }
+
+    public void setTips(String tips) {
+        this.tips = tips;
     }
 
     public String getTitle() {
@@ -72,14 +89,6 @@ public class Champion
         this.region = region;
     }
 
-    public String getName() {return name;}
-
-    public void setName(String name) {this.name = name;}
-
-    public String getTips() {return tips;}
-
-    public void setTips(String tips) {this.tips = tips;}
-
     public byte[] getImg() {
         return img;
     }
@@ -88,99 +97,107 @@ public class Champion
         this.img = img;
     }
 
-    public double getHp() {
+    public String getHp() {
         return hp;
     }
 
-    public void setHp(double hp) {
+    public void setHp(String hp) {
         this.hp = hp;
     }
 
-    public double getMp() {
+    public String getMp() {
         return mp;
     }
 
-    public void setMp(double mp) {
+    public void setMp(String mp) {
         this.mp = mp;
     }
 
-    public double getAd() {
+    public String getAd() {
         return ad;
     }
 
-    public void setAd(double ad) {
+    public void setAd(String ad) {
         this.ad = ad;
     }
 
-    public double getAp() {
+    public String getAp() {
         return ap;
     }
 
-    public void setAp(double ap) {
+    public void setAp(String ap) {
         this.ap = ap;
     }
 
-    public double getAspd() {
+    public String getAspd() {
         return aspd;
     }
 
-    public void setAspd(double aspd) {
+    public void setAspd(String aspd) {
         this.aspd = aspd;
     }
 
-    public double getMovspeed() {
+    public String getMovspeed() {
         return movspeed;
     }
 
-    public void setMovspeed(double movspeed) {
+    public void setMovspeed(String movspeed) {
         this.movspeed = movspeed;
     }
 
-    public double getHpregen() {
+    public String getHpregen() {
         return hpregen;
     }
 
-    public void setHpregen(double hpregen) {
+    public void setHpregen(String hpregen) {
         this.hpregen = hpregen;
     }
 
-    public double getMpregen() {
+    public String getMpregen() {
         return mpregen;
     }
 
-    public void setMpregen(double mpregen) {
+    public void setMpregen(String mpregen) {
         this.mpregen = mpregen;
     }
 
-    public double getArmor() {
+    public String getArmor() {
         return armor;
     }
 
-    public void setArmor(double armor) {
+    public void setArmor(String armor) {
         this.armor = armor;
     }
 
-    public double getMr() {
+    public String getMr() {
         return mr;
     }
 
-    public void setMr(double mr) {
+    public void setMr(String mr) {
         this.mr = mr;
     }
 
-    public double getCritstrike() {
+    public String getCritstrike() {
         return critstrike;
     }
 
-    public void setCritstrike(double critstrike) {
+    public void setCritstrike(String critstrike) {
         this.critstrike = critstrike;
     }
 
-    public double getLs() {
+    public String getLs() {
         return ls;
     }
 
-    public void setLs(double ls) {
+    public void setLs(String ls) {
         this.ls = ls;
+    }
+
+    public String getCdr() {
+        return cdr;
+    }
+
+    public void setCdr(String cdr) {
+        this.cdr = cdr;
     }
 }
