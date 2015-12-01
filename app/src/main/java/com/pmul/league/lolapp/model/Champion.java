@@ -28,6 +28,11 @@ public class Champion
     private double mr; // magic resist
     private double critstrike; // critical strike
     private double ls; // life steal
+    private double cdr;//cooldown reduction
+
+
+
+
 
     public Champion (){}
 
@@ -42,6 +47,14 @@ public class Champion
     public String getLore() {return lore;}
 
     public void setLore(String lore) {this.lore = lore;}
+
+    public void setCdr(double cdr) {
+        this.cdr = cdr;
+    }
+
+    public double getCdr() {
+        return cdr;
+    }
 
     public String getTitle() {
         return title;

@@ -41,6 +41,7 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
         static final String COLUMN_MR = "mr"; // magic resist
         static final String COLUMN_CRITSTRIKE = "critstrike"; // critical strike
         static final String COLUMN_LS = "ls"; // life steal
+        static final String COLUMN_CDR = "ls";//cooldown reduction
 
 
     // TABLA HABILIDADES
@@ -82,6 +83,7 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
                     + COLUMN_MR + " REAL,"
                     + COLUMN_CRITSTRIKE + " REAL,"
                     + COLUMN_LS + " REAL"
+                    + COLUMN_CDR + " REAL"
                     + ");";
 
     static final String CREATE_SKILLS_TABLE =
@@ -171,6 +173,7 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
         values.put(COLUMN_MR, champ.getMr());
         values.put(COLUMN_CRITSTRIKE, champ.getCritstrike());
         values.put(COLUMN_LS, champ.getLs());
+        values.put(COLUMN_CDR, champ.getCdr());
 
         db.insert(TABLE_CHAMPIONS, null, values);
         db.close();
@@ -211,6 +214,7 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
                 champ.setMr(cursor.getDouble(cursor.getColumnIndex(COLUMN_MR)));
                 champ.setCritstrike(cursor.getDouble(cursor.getColumnIndex(COLUMN_CRITSTRIKE)));
                 champ.setLs(cursor.getDouble(cursor.getColumnIndex(COLUMN_LS)));
+                champ.setCdr(cursor.getDouble(cursor.getColumnIndex(COLUMN_CDR)));
 
                 // Añadir campeon al Array de campeones
                 champions.add(champ);
