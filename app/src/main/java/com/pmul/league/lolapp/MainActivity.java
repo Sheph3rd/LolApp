@@ -1,10 +1,13 @@
 package com.pmul.league.lolapp;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pmul.league.lolapp.model.BD_LOLUniversity;
@@ -15,13 +18,17 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Console;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity
 {
     Elements championList;
     TextView tvLore;
+    Bitmap imgBitmap;
 
 
     @Override
@@ -41,17 +48,37 @@ public class MainActivity extends AppCompatActivity
         String content;
 
         @Override
-        protected String doInBackground(Void... params) {
+        protected String doInBackground(Void... params)
+        {
             String title ="";
 
             Elements championList = getChampionList();
 
             content = String.valueOf(championList.size());
 
+
+            try
+            {
+                Document doc = Jsoup.connect("http://gameinfo.euw.leagueoflegends.com/es/game-info/champions/ahri/").get();
+                Element img = doc.select("img").first();
+                String src = img.attr("src");
+                Log.e("SRC", "SRC IMAGE: " + src);
+                InputStream input = new URL(src).openStream();
+
+                imgBitmap = BitmapFactory.decodeStream(input);
+
+
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            /*
             for (Element e:championList)
             {
                getChampionData(e.text());
             }
+            */
             return title;
         }
 
@@ -59,6 +86,8 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(String result)
         {
             ((TextView)findViewById (R.id.textViewLore)).setText (content);
+            ((ImageView)findViewById (R.id.imageViewAhri)).setImageBitmap(imgBitmap);
+
         }
     }
 
@@ -142,6 +171,7 @@ public class MainActivity extends AppCompatActivity
                 champion.setMr(elements.get(13).text());
             }
 
+            Log.w("ChampionInstert","Campeon Insertado: " + championName);
 
 
             bd_lolUniversity.addChampion(champion);
@@ -149,14 +179,21 @@ public class MainActivity extends AppCompatActivity
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
-
-
-        // Comentario 2 Cambio de ramabich
-
     }
 
+    private Bitmap byteArrayToBitmap(byte[] byteArray)
+    {
+        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
+        return bitmap;
+    }
+
+    private byte[] bitmapToByteArray(Bitmap bitmap)
+    {
+        ByteArrayOutputStream blob = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, blob);
+        byte[] byteArray = blob.toByteArray();
+
+        return byteArray;
+    }
 }
