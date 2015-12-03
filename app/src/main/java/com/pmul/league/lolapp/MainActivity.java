@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.pmul.league.lolapp.model.BD_LOLUniversity;
 import com.pmul.league.lolapp.model.Champion;
+import com.pmul.league.lolapp.model.Skill;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -23,13 +24,13 @@ import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
 {
     Elements championList;
     TextView tvLore;
     Bitmap imgBitmap;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -59,13 +60,48 @@ public class MainActivity extends AppCompatActivity
 
             try
             {
-                Document doc = Jsoup.connect("http://gameinfo.euw.leagueoflegends.com/es/game-info/champions/ahri/").get();
+
+                Document doc = Jsoup.connect("http://gameinfo.euw.leagueoflegends.com/es/game-info/champions/annie/").get();
                 Element img = doc.select("img").first();
                 String src = img.attr("src");
                 Log.e("SRC", "SRC IMAGE: " + src);
                 InputStream input = new URL(src).openStream();
 
                 imgBitmap = BitmapFactory.decodeStream(input);
+
+
+
+
+
+
+
+
+
+
+                Elements elements;
+                Element element_aux;
+                Skill[] skills = new Skill[5];
+
+                int i=0;
+                elements=doc.select("div[id^=spell]");
+                for (Element e :elements)
+                {element_aux=e.select("p").first();
+
+                    String cadena=element_aux.outerHtml();
+                    //cadena=cadena.replaceAll("[^0-9/ ]","");
+                    content+="\n"+cadena;
+
+                    //content=String.valueOf(element_aux.children().size());
+                   // content+="\n"+element_aux.text();
+
+
+
+                    i++;
+                }
+
+
+
+
 
 
             } catch (IOException e)
@@ -115,6 +151,24 @@ public class MainActivity extends AppCompatActivity
         }
         return chamopionList;
 
+    }
+    private void getChampionSkills(Document doc, String champname)
+    {
+        Elements elements;
+        Element element_aux;
+        Skill[] skills = new Skill[5];
+
+        int i=0;
+        elements=doc.select("div[id^=spell]");
+        for (Element e :elements)
+        {
+            skills[i].setChamp_name(champname);
+            skills[i].setSkill_name(e.select("h3").first().text());
+            element_aux=e.select("p").first();
+
+
+            i++;
+        }
     }
 
     private void getChampionData(String championName)
