@@ -57,11 +57,11 @@ public class MainActivity extends AppCompatActivity
 
             content = String.valueOf(championList.size());
 
-
+/*
             try
             {
 
-                Document doc = Jsoup.connect("http://gameinfo.euw.leagueoflegends.com/es/game-info/champions/annie/").get();
+                Document doc = Jsoup.connect("http://gameinfo.euw.leagueoflegends.com/es/game-info/champions/aatrox/").get();
                 Element img = doc.select("img").first();
                 String src = img.attr("src");
                 Log.e("SRC", "SRC IMAGE: " + src);
@@ -82,46 +82,55 @@ public class MainActivity extends AppCompatActivity
                 Element element_aux;
                 Skill[] skills = new Skill[5];
 
-                int i=0;
                 elements=doc.select("div[id^=spell]");
+                int i=0;
                 for (Element e :elements)
-                {element_aux=e.select("p").first();
+                {
+                    element_aux=e.select("p").first();
 
-                    String cadena=element_aux.outerHtml();
-                    //cadena=cadena.replaceAll("[^0-9/ ]","");
-                    content+="\n"+cadena;
+                    String cadena=element_aux.html();
+                    cadena = cadena.replaceAll("<b>", "");
+                    cadena = cadena.replaceAll("</b>", "");
 
-                    //content=String.valueOf(element_aux.children().size());
-                   // content+="\n"+element_aux.text();
+                    String []costeRango = cadena.split("<br>");
 
+                    if (i > 0) // Skills
+                    {
+                        //costeRango[0]); // COSTE
+                        //costeRango[1]); // RANGO
 
+                        content += "\n" + e.getElementsByClass("spell-description").first().text(); // DESCRIPCION SKILL
+                        content += "\n" + e.getElementsByClass("spell-tooltip").first().text(); // TOOLTIP SKILL
+                    }
+                    else // Pasiva
+                    {
+                        content += "\n" + e.getElementsByClass("spell-description").first().text(); // DESCRIPCION PASIVA
+                    }
+
+                    //e.select("h3").first().text(); NOMBRE SKILL
+
+                    content+="\n\n";
 
                     i++;
                 }
-
-
-
-
-
 
             } catch (IOException e)
             {
                 e.printStackTrace();
             }
+*/
 
-            /*
             for (Element e:championList)
             {
                getChampionData(e.text());
             }
-            */
+
             return title;
         }
 
         @Override
-        protected void onPostExecute(String result)
-        {
-            ((TextView)findViewById (R.id.textViewLore)).setText (content);
+        protected void onPostExecute(String result) {
+            ((TextView)findViewById (R.id.textViewLore)).setText(content);
             ((ImageView)findViewById (R.id.imageViewAhri)).setImageBitmap(imgBitmap);
 
         }
@@ -152,22 +161,91 @@ public class MainActivity extends AppCompatActivity
         return chamopionList;
 
     }
-    private void getChampionSkills(Document doc, String champname)
+    private void getChampionSkills(Document doc, String champName)
     {
+        BD_LOLUniversity bd_lolUniversity = new BD_LOLUniversity(getApplicationContext());
+
         Elements elements;
         Element element_aux;
-        Skill[] skills = new Skill[5];
+        Skill[] skills = new Skill[9];
 
-        int i=0;
+        for (int i = 0; i < 9; i++)
+        {
+            skills[i] = new Skill();
+        }
+
         elements=doc.select("div[id^=spell]");
+
+        int skillCount=0;
         for (Element e :elements)
         {
-            skills[i].setChamp_name(champname);
-            skills[i].setSkill_name(e.select("h3").first().text());
             element_aux=e.select("p").first();
 
+            String cadena=element_aux.html();
+            cadena = cadena.replaceAll("<b>", "");
+            cadena = cadena.replaceAll("</b>", "");
 
-            i++;
+            String []costeRango = cadena.split("<br>");
+
+            if (skillCount > 0) // Skills
+            {
+                skills[skillCount].setSkill_cost(costeRango[0]); // COSTE
+                skills[skillCount].setSkill_range(costeRango[1]); // RANGO
+
+                skills[skillCount].setDescription(e.getElementsByClass("spell-description").first().text()); // DESCRIPCION SKILL
+                skills[skillCount].setDetail(e.getElementsByClass("spell-tooltip").first().text()); // TOOLTIP SKILL
+            }
+            else // Pasiva
+            {
+                skills[skillCount].setDescription(e.getElementsByClass("spell-description").first().text()); // DESCRIPCION PASIVA
+            }
+
+            skills[skillCount].setSkill_name(e.select("h3").first().text()); // NOMBRE SKILL
+
+            skills[skillCount].setChamp_name(champName);
+
+            switch (skillCount)
+            {
+                case 0:
+                    skills[skillCount].setCast_char("P");
+                    break;
+                case 1:
+                    skills[skillCount].setCast_char("Q");
+                    break;
+                case 2:
+                    skills[skillCount].setCast_char("W");
+                    break;
+                case 3:
+                    skills[skillCount].setCast_char("E");
+                    break;
+                case 4:
+                    skills[skillCount].setCast_char("R");
+                    break;
+                case 5:
+                    skills[skillCount].setCast_char("Q");
+                    break;
+                case 6:
+                    skills[skillCount].setCast_char("W");
+                    break;
+                case 7:
+                    skills[skillCount].setCast_char("E");
+                    break;
+                case 8:
+                    skills[skillCount].setCast_char("R");
+                    break;
+
+            }
+
+            skillCount++;
+        }
+
+        for (Skill s:skills)
+        {
+            if (s.getSkill_name() != null)
+            {
+                bd_lolUniversity.addSkill(s);
+                Log.w("SkillInstert", "SkillInsertada: " + s.getSkill_name());
+            }
         }
     }
 
@@ -177,6 +255,12 @@ public class MainActivity extends AppCompatActivity
         BD_LOLUniversity bd_lolUniversity = new BD_LOLUniversity(getApplicationContext());
         String champName = championName.replaceAll("\\W", "");
         champName = champName.toLowerCase();
+
+        if (champName.equals("wukong"))
+        {
+            champName = "monkeyking"; // La mayor tocada de pelotas de la historia
+        }
+
         String url = "http://gameinfo.euw.leagueoflegends.com/es/game-info/champions/" + champName + "/";
 
         try
@@ -225,10 +309,19 @@ public class MainActivity extends AppCompatActivity
                 champion.setMr(elements.get(13).text());
             }
 
-            Log.w("ChampionInstert","Campeon Insertado: " + championName);
 
 
             bd_lolUniversity.addChampion(champion);
+            Log.w("ChampionInstert", "Campeon Insertado: " + championName);
+
+            if (champName.equals("monkeyking"))
+            {
+                champName = "wukong"; // La mayor tocada de pelotas de la historia
+            }
+
+            getChampionSkills(doc, champName);
+
+
 
         } catch (IOException e) {
             e.printStackTrace();
