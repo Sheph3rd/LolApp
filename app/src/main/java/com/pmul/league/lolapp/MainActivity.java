@@ -1,5 +1,6 @@
 package com.pmul.league.lolapp;
 
+import android.app.ProgressDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,6 +26,7 @@ import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity
     Elements championList;
     TextView tvLore;
     Bitmap imgBitmap;
+    ProgressDialog progressDialog;
+    int progress=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,54 +49,54 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private class getAllChampionsData extends AsyncTask<Void, Void, String>
+    private class getAllChampionsData extends AsyncTask<Void, String, String>
     {
         String content;
 
         @Override
+        protected void onProgressUpdate(String... msg)
+        {
+            super.onProgressUpdate(msg);
+            progressDialog.setMessage("Invocando a " + msg[0]);
+
+        }
+
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+            progress = 0;
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setIndeterminate(false);
+            progressDialog.setTitle("Descargando Datos...");
+            progressDialog.setMessage("");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setProgress(progress);
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+        }
+
+        @Override
         protected String doInBackground(Void... params)
         {
-            String title ="";
+            String title = "";
 
             Elements championList = getChampionList();
 
             content = String.valueOf(championList.size());
 
-/*
-            try
-            {
-
-                Document doc = Jsoup.connect("http://gameinfo.euw.leagueoflegends.com/es/game-info/champions/aatrox/").get();
-                Element img = doc.select("img").first();
-                String src = img.attr("src");
-                Log.e("SRC", "SRC IMAGE: " + src);
-                InputStream input = new URL(src).openStream();
-
-                imgBitmap = BitmapFactory.decodeStream(input);
-
-                byte[] imgByte = bitmapToByteArray(imgBitmap);
-
-                imgBitmap = byteArrayToBitmap(imgByte);
+            progressDialog.setMax(championList.size());
 
 
-                Elements elements;
-                Element element_aux;
-                Skill[] skills = new Skill[5];
-
-                elements=doc.select("div[id^=spell]");
-
-
-
-            } catch (IOException e)
-            {
-                e.printStackTrace();
+            for (Element e:championList) {
+                publishProgress(e.text().toString());
+                getChampionData(e.text());
+                progress++;
+                progressDialog.setProgress(progress);
             }
-*/
 
-            for (Element e:championList)
-            {
-               getChampionData(e.text());
-            }
+
 
             return title;
         }
@@ -101,7 +105,7 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(String result) {
             ((TextView)findViewById (R.id.textViewLore)).setText(content);
             ((ImageView)findViewById (R.id.imageViewAhri)).setImageBitmap(imgBitmap);
-
+            progressDialog.dismiss();
         }
     }
 
@@ -199,7 +203,6 @@ public class MainActivity extends AppCompatActivity
             imgChamp = BitmapFactory.decodeStream(input);
 
             champion.setImg(bitmapToByteArray(imgChamp));
-
 
 
             bd_lolUniversity.addChampion(champion);
