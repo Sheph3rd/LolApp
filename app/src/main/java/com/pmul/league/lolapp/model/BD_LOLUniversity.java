@@ -61,6 +61,7 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
     static final String COLUMN_SKIN_NAME = "skin_name";
     static final String COLUMN_SKIN_VIDEO = "skin_video";
     static final String COLUMN_SKIN_IMG = "skin_img";
+    static final String COLUMN_SKIN_URL = "skin_url";
 
     static final String CREATE_CHAMPION_TABLE =
             "CREATE TABLE " + TABLE_CHAMPIONS + " ("
@@ -106,6 +107,7 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
                     + COLUMN_CHAMP_NAME + " TEXT,"
                     + COLUMN_SKIN_NAME + " TEXT,"
                     + COLUMN_SKIN_VIDEO + " TEXT,"
+                    + COLUMN_SKIN_URL + " TEXT,"
                     + COLUMN_SKIN_IMG + " BLOB"
                     + ");";
 
@@ -330,6 +332,7 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
         values.put(COLUMN_SKIN_NAME, skin.getSkin_name());
         values.put(COLUMN_SKIN_VIDEO, skin.getSkin_video());
         values.put(COLUMN_SKIN_IMG, skin.getSkin_img());
+        values.put(COLUMN_SKIN_URL, skin.getSkin_url());
 
         db.insert(TABLE_SKINS, null, values);
         db.close();
@@ -354,6 +357,7 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
                 skin.setSkin_name(cursor.getString(cursor.getColumnIndex(COLUMN_SKIN_NAME)));
                 skin.setSkin_video(cursor.getString(cursor.getColumnIndex(COLUMN_SKIN_VIDEO)));
                 skin.setSkin_img(cursor.getBlob(cursor.getColumnIndex(COLUMN_SKIN_IMG)));
+                skin.setSkin_url(cursor.getString(cursor.getColumnIndex(COLUMN_SKIN_URL)));
 
                 // Añadir skin al Array de skins
                 skins.add(skin);
@@ -363,70 +367,4 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
         db.close();
         return skins;
     }
-
-    /*
-    @Override
-    public ArrayList<Note> getNotes() {
-        ArrayList<Note> notes = new ArrayList<>();
-        String query = "SELECT * FROM " + TABLE_NOTES;
-        SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-
-        if(cursor.moveToFirst()) {
-            do {
-                Note note = new Note();
-                note.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
-                note.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)));
-                note.setText(cursor.getString(cursor.getColumnIndex(COLUMN_TEXT)));
-                notes.add(note);
-            } while(cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-
-        return notes;
-    }
-
-    @Override
-    public void addNote(Note note) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_TITLE, note.getTitle());
-        values.put(COLUMN_TEXT, note.getText());
-
-        db.insert(TABLE_NOTES, null, values);
-        db.close();
-    }
-
-    @Override
-    public void deleteNote(int noteId) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-
-        db.delete(TABLE_NOTES, COLUMN_ID + " = ?",
-                new String[] {String.valueOf(noteId)});
-        db.close();
-    }
-
-    @Override
-    public Note getNote(int noteId) {
-        String query = "SELECT * FROM " + TABLE_NOTES + " WHERE " +
-                COLUMN_ID + " = " + noteId;
-        SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-
-        Note note = new Note();
-        if(cursor.moveToFirst()) {
-            note.setId(cursor.getInt(
-                    cursor.getColumnIndex(COLUMN_ID)));
-            note.setTitle(cursor.getString(
-                    cursor.getColumnIndex(COLUMN_TITLE)));
-            note.setText(cursor.getString(
-                    cursor.getColumnIndex(COLUMN_TEXT)));
-        }
-        cursor.close();
-        db.close();
-
-        return note;
-    }
-*/
 }

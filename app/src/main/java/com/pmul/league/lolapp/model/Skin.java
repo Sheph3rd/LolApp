@@ -11,7 +11,7 @@ public class Skin
     private String skin_name;
     private String skin_video;
     private byte[] skin_img;
-
+    private String skin_url;
 
     public Skin() { }
 
@@ -20,6 +20,15 @@ public class Skin
 
 
     // GETTERS AND SETTERS
+
+
+    public String getSkin_url() {
+        return skin_url;
+    }
+
+    public void setSkin_url(String skin_url) {
+        this.skin_url = skin_url;
+    }
 
     public int getSkin_id() {
         return skin_id;

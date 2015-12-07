@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.pmul.league.lolapp.model.BD_LOLUniversity;
 import com.pmul.league.lolapp.model.Champion;
 import com.pmul.league.lolapp.model.Skill;
+import com.pmul.league.lolapp.model.Skin;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -69,13 +70,9 @@ public class MainActivity extends AppCompatActivity
 
                 imgBitmap = BitmapFactory.decodeStream(input);
 
+                byte[] imgByte = bitmapToByteArray(imgBitmap);
 
-
-
-
-
-
-
+                imgBitmap = byteArrayToBitmap(imgByte);
 
 
                 Elements elements;
@@ -83,36 +80,8 @@ public class MainActivity extends AppCompatActivity
                 Skill[] skills = new Skill[5];
 
                 elements=doc.select("div[id^=spell]");
-                int i=0;
-                for (Element e :elements)
-                {
-                    element_aux=e.select("p").first();
 
-                    String cadena=element_aux.html();
-                    cadena = cadena.replaceAll("<b>", "");
-                    cadena = cadena.replaceAll("</b>", "");
 
-                    String []costeRango = cadena.split("<br>");
-
-                    if (i > 0) // Skills
-                    {
-                        //costeRango[0]); // COSTE
-                        //costeRango[1]); // RANGO
-
-                        content += "\n" + e.getElementsByClass("spell-description").first().text(); // DESCRIPCION SKILL
-                        content += "\n" + e.getElementsByClass("spell-tooltip").first().text(); // TOOLTIP SKILL
-                    }
-                    else // Pasiva
-                    {
-                        content += "\n" + e.getElementsByClass("spell-description").first().text(); // DESCRIPCION PASIVA
-                    }
-
-                    //e.select("h3").first().text(); NOMBRE SKILL
-
-                    content+="\n\n";
-
-                    i++;
-                }
 
             } catch (IOException e)
             {
@@ -161,6 +130,95 @@ public class MainActivity extends AppCompatActivity
         return chamopionList;
 
     }
+
+    private void getChampionData(String championName)
+    {
+        Document doc;
+        BD_LOLUniversity bd_lolUniversity = new BD_LOLUniversity(getApplicationContext());
+        String champName = championName.replaceAll("\\W", "");
+        champName = champName.toLowerCase();
+
+        if (champName.equals("wukong"))
+        {
+            champName = "monkeyking"; // La mayor tocada de pelotas de la historia
+        }
+
+        String url = "http://gameinfo.euw.leagueoflegends.com/es/game-info/champions/" + champName + "/";
+
+        try
+        {
+            Champion champion = new Champion();
+            Elements elements;
+            Element element;
+            Bitmap imgChamp;
+            doc = Jsoup.connect(url).get();
+
+
+            element = doc.getElementById("champion-lore");
+            champion.setLore(element.text());
+
+            champion.setName(championName);
+
+            elements = doc.select("em");
+            champion.setTitle(elements.first().text());
+
+            elements = doc.select("div[class^=faction]");
+            champion.setRegion(elements.first().text());
+
+            champion.setImg(null);
+
+            elements = doc.select("span[class*=stat]");
+
+            if (elements.size() > 16)
+            {
+                champion.setHp(elements.get(1).text());
+                champion.setMp(elements.get(3).text());
+                champion.setAd(elements.get(5).text());
+                champion.setAspd(elements.get(7).text());
+                champion.setMovspeed(elements.get(9).text());
+                champion.setHpregen(elements.get(11).text());
+                champion.setMpregen(elements.get(13).text());
+                champion.setArmor(elements.get(15).text());
+                champion.setMr(elements.get(17).text());
+            }
+            else
+            {
+                champion.setHp(elements.get(1).text());
+                champion.setAd(elements.get(3).text());
+                champion.setAspd(elements.get(5).text());
+                champion.setMovspeed(elements.get(7).text());
+                champion.setHpregen(elements.get(9).text());
+                champion.setArmor(elements.get(11).text());
+                champion.setMr(elements.get(13).text());
+            }
+
+            // Imagen Campeon
+            Element img = doc.select("img").first();
+            String src = img.attr("src");
+            InputStream input = new URL(src).openStream();
+            imgChamp = BitmapFactory.decodeStream(input);
+
+            champion.setImg(bitmapToByteArray(imgChamp));
+
+
+
+            bd_lolUniversity.addChampion(champion);
+            Log.w("ChampionInstert", "Campeon Insertado: " + championName);
+
+            if (champName.equals("monkeyking"))
+            {
+                champName = "wukong"; // La mayor tocada de pelotas de la historia
+            }
+
+            getChampionSkills(doc, champName);
+            getChampionsSkins(doc, champName);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void getChampionSkills(Document doc, String champName)
     {
         BD_LOLUniversity bd_lolUniversity = new BD_LOLUniversity(getApplicationContext());
@@ -236,6 +294,25 @@ public class MainActivity extends AppCompatActivity
 
             }
 
+            // Imagen Skill
+            try
+            {
+                Bitmap imgSkill;
+                Element img = e.select("img").first();
+                String src = img.attr("src");
+                src = src.replaceAll(" ","%20");
+                InputStream input = null;
+                input = new URL(src).openStream();
+                imgSkill = BitmapFactory.decodeStream(input);
+                skills[skillCount].setSkill_img(bitmapToByteArray(imgSkill));
+                Log.e("SKILLIMG", "IMG: "+src);
+
+            } catch (IOException e1)
+            {
+                e1.printStackTrace();
+            }
+
+
             skillCount++;
         }
 
@@ -249,82 +326,27 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void getChampionData(String championName)
+    private void getChampionsSkins(Document doc, String champName)
     {
-        Document doc;
         BD_LOLUniversity bd_lolUniversity = new BD_LOLUniversity(getApplicationContext());
-        String champName = championName.replaceAll("\\W", "");
-        champName = champName.toLowerCase();
 
-        if (champName.equals("wukong"))
+        Elements elementsSkins = doc.select("a[class^=skins]");
+
+        for (Element e: elementsSkins)
         {
-            champName = "monkeyking"; // La mayor tocada de pelotas de la historia
-        }
+            Skin skin = new Skin();
+            skin.setChamp_name(champName);
 
-        String url = "http://gameinfo.euw.leagueoflegends.com/es/game-info/champions/" + champName + "/";
+            skin.setSkin_name(e.attr("title"));
 
-        try
-        {
-            Champion champion = new Champion();
-            Elements elements;
-            Element element;
-            doc = Jsoup.connect(url).get();
+            // IMG SKIN URL
+            String src = "";
+            src = e.attr("href");
+            src = src.replaceAll(" ", "%20");
+            skin.setSkin_url(src);
 
-
-            element = doc.getElementById("champion-lore");
-            champion.setLore(element.text());
-
-            champion.setName(championName);
-
-            elements = doc.select("em");
-            champion.setTitle(elements.first().text());
-
-            elements = doc.select("div[class^=faction]");
-            champion.setRegion(elements.first().text());
-
-            champion.setImg(null);
-
-            elements = doc.select("span[class*=stat]");
-
-            if (elements.size() > 16)
-            {
-                champion.setHp(elements.get(1).text());
-                champion.setMp(elements.get(3).text());
-                champion.setAd(elements.get(5).text());
-                champion.setAspd(elements.get(7).text());
-                champion.setMovspeed(elements.get(9).text());
-                champion.setHpregen(elements.get(11).text());
-                champion.setMpregen(elements.get(13).text());
-                champion.setArmor(elements.get(15).text());
-                champion.setMr(elements.get(17).text());
-            }
-            else
-            {
-                champion.setHp(elements.get(1).text());
-                champion.setAd(elements.get(3).text());
-                champion.setAspd(elements.get(5).text());
-                champion.setMovspeed(elements.get(7).text());
-                champion.setHpregen(elements.get(9).text());
-                champion.setArmor(elements.get(11).text());
-                champion.setMr(elements.get(13).text());
-            }
-
-
-
-            bd_lolUniversity.addChampion(champion);
-            Log.w("ChampionInstert", "Campeon Insertado: " + championName);
-
-            if (champName.equals("monkeyking"))
-            {
-                champName = "wukong"; // La mayor tocada de pelotas de la historia
-            }
-
-            getChampionSkills(doc, champName);
-
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("SKINIMG", "IMGSKIN: " + src);
+            bd_lolUniversity.addSkin(skin);
         }
     }
 
