@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 
 import java.util.ArrayList;
@@ -148,6 +149,29 @@ public class BD_LOLUniversity extends SQLiteOpenHelper
     /**************************************************************************/
     /******************* METODOS PROPIOS DE GESTION DE DATOS ******************/
     /**************************************************************************/
+
+    /********* DROP DATABASE **********/
+
+    public void resetDatabase()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL(DROP_TABLE_CHAMPIONS);
+        Log.e("DATABASE", "Borrada Tabla Campeones");
+        db.execSQL(DROP_TABLE_SKILLS);
+        Log.e("DATABASE", "Borrada Tabla Skills");
+        db.execSQL(DROP_TABLE_SKINS);
+        Log.e("DATABASE", "Borrada Tabla Skins");
+
+        db.execSQL(CREATE_CHAMPION_TABLE);
+        Log.e("DATABASE", "Creada Tabla Campeones");
+        db.execSQL(CREATE_SKILLS_TABLE);
+        Log.e("DATABASE", "Creada Tabla Skills");
+        db.execSQL(CREATE_SKINS_TABLE);
+        Log.e("DATABASE", "Creada Tabla Skins");
+
+        db.close();
+    }
 
     /*********** CHAMPIONS ***********/
 
