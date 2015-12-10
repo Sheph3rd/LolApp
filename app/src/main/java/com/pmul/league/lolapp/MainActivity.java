@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity
             for (Element e:championList)
             {
                 publishProgress(e.text().toString());
-                getChampionData(e.text(), "br" , "pt");
+                getChampionData(e.text(), "euw" , "es");
                 progress++;
                 progressDialog.setProgress(progress);
             }
